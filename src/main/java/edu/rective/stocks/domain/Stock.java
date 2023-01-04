@@ -8,7 +8,6 @@ import org.apache.commons.lang3.Validate;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.domain.Persistable;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -33,6 +32,7 @@ public class Stock {
     private Instant updatedOn;
 
     public Stock(String isin, Money price) {
+        Validate.notNull(isin);
         Validate.notNull(price);
         this.isin = isin;
         this.priceAmount = price.getAmount();

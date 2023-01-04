@@ -25,4 +25,12 @@ public class StockInfoService {
                         Mono.error(new IllegalArgumentException(String.format("No stock with ISIN %s exists", isin)))
                 );
     }
+
+    public Mono<Stock> createNewStock(Stock stock) {
+        if (stock.getId() != null) {
+            return Mono.error(new IllegalArgumentException("New stock entity must have null as ID"));
+        }
+        return stockRepository.save(stock);
+    }
+
 }

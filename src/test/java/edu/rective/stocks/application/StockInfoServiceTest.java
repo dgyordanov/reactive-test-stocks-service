@@ -10,12 +10,13 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class StockInfoServiceTest {
 
     private StockInfoService stockInfoService;
+
+    private StockRepository stockRepoMock;
 
     private static final String ISIN = "J123BK124";
 
@@ -24,13 +25,14 @@ public class StockInfoServiceTest {
 
     @BeforeEach
     void setUp() {
-        StockRepository stockRepoMock = mock(StockRepository.class);
+        stockRepoMock = mock(StockRepository.class);
         when(stockRepoMock.findByIsin(anyString()))
                 .thenAnswer(invocation ->
                         invocation.getArgument(0, String.class).equals(ISIN)
                                 ? Mono.just(EXISTING_STOCK)
                                 : Mono.empty()
                 );
+        when(stockRepoMock.save(any(Stock.class))).thenAnswer(invocation -> Mono.just(invocation.getArgument(0)));
 
         stockInfoService = new StockInfoService(stockRepoMock);
     }
@@ -39,7 +41,7 @@ public class StockInfoServiceTest {
     public void givenAStockWithISIN_whenGetStockInfoByISIN_thenReturnTheStock() {
         StepVerifier.create(stockInfoService.getStockInfo(ISIN))
                 .expectNext(EXISTING_STOCK)
-                .expectComplete();
+                .verifyComplete();
     }
 
     @Test
@@ -61,6 +63,15 @@ public class StockInfoServiceTest {
         StepVerifier.create(stockInfoService.getStockInfo(""))
                 .expectError(IllegalArgumentException.class)
                 .verify();
+    }
+
+    @Test
+    public void givenANewValidStock_whenCreateStock_thenNewStockCreated() {
+        StepVerifier.create(stockInfoService.createNewStock(EXISTING_STOCK))
+                .expectNext(EXISTING_STOCK)
+                .verifyComplete();
+
+        verify(stockRepoMock).save(EXISTING_STOCK);
     }
 
 }
