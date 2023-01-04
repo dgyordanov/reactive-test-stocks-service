@@ -5,7 +5,6 @@ import org.joda.money.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
@@ -20,12 +19,12 @@ public class StockRepositoryRepoTests {
 	void persistStockTest() {
 		Stock testStock = new Stock("testISIN", Money.of(CurrencyUnit.EUR, BigDecimal.valueOf(10.23)));
 
-		Mono<Stock> saved = stockRepository.save(testStock);
+		var saved = stockRepository.save(testStock);
 		StepVerifier.create(saved)
 				.expectNext(testStock)
 				.verifyComplete();
 
-		Mono<Stock> findByIsin = stockRepository.findByIsin("testISIN");
+		var findByIsin = stockRepository.findByIsin("testISIN");
 		StepVerifier.create(findByIsin)
 				.expectNext(testStock)
 				.verifyComplete();

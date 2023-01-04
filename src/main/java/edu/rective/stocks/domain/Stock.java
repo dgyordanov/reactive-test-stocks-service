@@ -34,6 +34,7 @@ public class Stock {
     public Stock(String isin, Money price) {
         Validate.notNull(isin);
         Validate.notNull(price);
+
         this.isin = isin;
         this.priceAmount = price.getAmount();
         this.priceCurrency = price.getCurrencyUnit().getCode();
