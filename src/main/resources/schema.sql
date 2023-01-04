@@ -5,5 +5,6 @@ CREATE TABLE STOCK(
     ISIN varchar not null,
     PRICE_CURRENCY varchar not null,
     PRICE_AMOUNT decimal(50, 2) not null,
-    UPDATED_ON timestamp not null
+    UPDATED_ON timestamp not null,
+    UNIQUE (ISIN)
 );
