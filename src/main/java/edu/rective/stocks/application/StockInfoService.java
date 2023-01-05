@@ -3,6 +3,7 @@ package edu.rective.stocks.application;
 import edu.rective.stocks.domain.Stock;
 import edu.rective.stocks.domain.StockRepository;
 import lombok.RequiredArgsConstructor;
+import org.joda.money.Money;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -33,4 +34,11 @@ public class StockInfoService {
         return stockRepository.save(stock);
     }
 
+    public void updateStockPrice(String symbol, Money price) {
+        System.out.println("updateStockPrice(" + symbol + "; " + price.getAmount() + price.getCurrencyUnit().getCode() + ")");
+        stockRepository.findByIsin(symbol)
+                .map(stock -> stock.updatePrice(price))
+                .doOnNext(stockRepository::save)
+                .subscribe();
+    }
 }

@@ -45,4 +45,12 @@ public class Stock {
         return Money.of(CurrencyUnit.of(priceCurrency), priceAmount);
     }
 
+    public Stock updatePrice(Money newPrice) {
+        this.priceAmount = newPrice.getAmount();
+        this.priceCurrency = newPrice.getCurrencyUnit().getCode();
+        updatedOn = Instant.now();
+
+        return this;
+    }
+
 }

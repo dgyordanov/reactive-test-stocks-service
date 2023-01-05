@@ -1,0 +1,5 @@
+alphavantage.api:
+  baseuri: https://www.alphavantage.co/query
+  apikey: 5662BFTBZ717OSDZ
+
+#https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=5662BFTBZ717OSDZ
