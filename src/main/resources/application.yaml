@@ -2,4 +2,15 @@ alphavantage.api:
   baseuri: https://www.alphavantage.co/query
   apikey: 5662BFTBZ717OSDZ
 
+spring.cloud.stream:
+  function.definition: stockUpdates
+  bindings:
+    stockUpdates-in-0:
+      destination: com.financial.stock
+      contentType: "application/vnd.cloudevent+json"
+  kafka:
+    binder:
+      brokers: localhost:9092
+      auto-create-topics: true
+
 #https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=IBM&apikey=5662BFTBZ717OSDZ
